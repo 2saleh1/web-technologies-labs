@@ -1,0 +1,19 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+{% block title %} HTML5 Links Example {% endblock title %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'main.css' %}">
+{% endblock stylesheets %}
+{% block content %}
+<div class="links-container">
+    <div class="link-block green-bg">
+        <a href="https://qu.edu.sa/" target="_blank">Go to QU website (open a new tab)</a>
+    </div>
+    <div class="link-block gray-bg">
+        <a href="https://qu.edu.sa/">Go to QU website (open in the same page/tab)</a>
+    </div>
+    <div class="link-block black-bg">
+        <a href="https://qu.edu.sa/">Go to QU website (open in the same page/tab)</a>
+    </div>
+</div>
+{% endblock content %}
