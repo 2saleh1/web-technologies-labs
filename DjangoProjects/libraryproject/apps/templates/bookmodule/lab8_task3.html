@@ -1,0 +1,17 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Lab8 Task3{% endblock title %}
+
+{% block content %}
+<h1>Lab 8 - Task 3</h1>
+<p>Books with edition less than or equal to 3 and title and author do not contain "qu" (Q with ~)</p>
+
+{% if books %}
+    {% for book in books %}
+        ID: {{ book.id }}, Title: {{ book.title }}, Author: {{ book.author }}, Price: {{ book.price }}, Edition: {{ book.edition }}
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>No books found.</p>
+{% endif %}
+{% endblock content %}

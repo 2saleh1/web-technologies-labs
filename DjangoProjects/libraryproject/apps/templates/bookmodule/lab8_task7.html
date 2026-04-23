@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Lab8 Task7{% endblock title %}
+
+{% block content %}
+<h1>Lab 8 - Task 7</h1>
+<p>Number of students in each city</p>
+
+{% if city_stats %}
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <th>City</th>
+            <th>Number of Students</th>
+        </tr>
+        {% for row in city_stats %}
+            <tr>
+                <td>{{ row.city }}</td>
+                <td>{{ row.student_count }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No city/student data found.</p>
+{% endif %}
+{% endblock content %}
