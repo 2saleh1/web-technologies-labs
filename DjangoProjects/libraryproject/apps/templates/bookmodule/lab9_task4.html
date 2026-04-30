@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Lab9 Task4{% endblock title %}
+
+{% block content %}
+<h1>Lab 9 - Task 4</h1>
+<p>Average, Minimum, and Maximum Price per Publisher</p>
+
+{% if publishers %}
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <th>Publisher</th>
+            <th>Average Price</th>
+            <th>Min Price</th>
+            <th>Max Price</th>
+        </tr>
+        {% for pub in publishers %}
+            <tr>
+                <td>{{ pub.name }}</td>
+                <td>{{ pub.avg_price|default:0|floatformat:2 }}</td>
+                <td>{{ pub.min_price|default:0|floatformat:2 }}</td>
+                <td>{{ pub.max_price|default:0|floatformat:2 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No publishers found.</p>
+{% endif %}
+{% endblock content %}

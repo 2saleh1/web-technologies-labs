@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Lab9 Task3{% endblock title %}
+
+{% block content %}
+<h1>Lab 9 - Task 3</h1>
+<p>Oldest Book Date for Each Publisher</p>
+
+{% if publishers %}
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <th>Publisher</th>
+            <th>Location</th>
+            <th>Oldest Book Date</th>
+        </tr>
+        {% for pub in publishers %}
+            <tr>
+                <td>{{ pub.name }}</td>
+                <td>{{ pub.location }}</td>
+                <td>{{ pub.oldest_book_date|default:"N/A" }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No publishers found.</p>
+{% endif %}
+{% endblock content %}

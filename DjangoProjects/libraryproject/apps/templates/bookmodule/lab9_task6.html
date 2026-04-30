@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Lab9 Task6{% endblock title %}
+
+{% block content %}
+<h1>Lab 9 - Task 6</h1>
+<p>Count of Books per Publisher (Price > 50, Quantity < 5 and >= 1)</p>
+
+{% if publishers %}
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <th>Publisher</th>
+            <th>Location</th>
+            <th>Filtered Books Count</th>
+        </tr>
+        {% for pub in publishers %}
+            <tr>
+                <td>{{ pub.name }}</td>
+                <td>{{ pub.location }}</td>
+                <td>{{ pub.filtered_book_count|default:0 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No publishers found.</p>
+{% endif %}
+{% endblock content %}

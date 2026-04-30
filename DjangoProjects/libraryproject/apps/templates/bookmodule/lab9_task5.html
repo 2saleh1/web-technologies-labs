@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Lab9 Task5{% endblock title %}
+
+{% block content %}
+<h1>Lab 9 - Task 5</h1>
+<p>Publishers with Count of Highly Rated Books (Rating >= 4)</p>
+
+{% if publishers %}
+    <table border="1" cellpadding="8" cellspacing="0">
+        <tr>
+            <th>Publisher</th>
+            <th>Highly Rated Books Count</th>
+            <th>Total Quantity</th>
+        </tr>
+        {% for pub in publishers %}
+            <tr>
+                <td>{{ pub.name }}</td>
+                <td>{{ pub.highly_rated_count|default:0 }}</td>
+                <td>{{ pub.total_quantity|default:0 }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No publishers found.</p>
+{% endif %}
+{% endblock content %}
