@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Avg, Count, Max, Min, Q, Sum
+from django.utils import timezone
 from .models import Address, Book, Publisher, Author
 
 def index(request):
@@ -155,3 +156,88 @@ def lab9_task6(request):
         )
     ).order_by('name')
     return render(request, 'bookmodule/lab9_task6.html', {'publishers': publishers})
+
+
+# Lab 9 Part 1 - CRUD Operations
+
+def lab9_part1_listbooks(request):
+    """Task 1: List all books with add/edit/delete links"""
+    books = Book.objects.all().order_by('title')
+    return render(request, 'bookmodule/lab9_part1_listbooks.html', {'books': books})
+
+
+def lab9_part1_addbook(request):
+    """Task 2: Add a new book"""
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        author = request.POST.get('author', '').strip()
+        edition = request.POST.get('edition', 1)
+        price = request.POST.get('price', 0)
+        quantity = request.POST.get('quantity', 1)
+        rating = request.POST.get('rating', 1)
+        
+        if title and author:
+            try:
+                edition = int(edition)
+                price = float(price)
+                quantity = int(quantity)
+                rating = int(rating)
+                
+                Book.objects.create(
+                    title=title,
+                    author=author,
+                    edition=edition,
+                    price=price,
+                    quantity=quantity,
+                    rating=rating,
+                    pubdate=timezone.now()
+                )
+                return redirect('books.lab9_part1_listbooks')
+            except (ValueError, TypeError):
+                error = "Invalid input values. Please check your entries."
+                return render(request, 'bookmodule/lab9_part1_addbook.html', {'error': error})
+    
+    return render(request, 'bookmodule/lab9_part1_addbook.html')
+
+
+def lab9_part1_editbook(request, id):
+    """Task 3: Edit a book"""
+    try:
+        book = Book.objects.get(id=id)
+    except Book.DoesNotExist:
+        return render(request, 'bookmodule/lab9_part1_editbook.html', {'error': 'Book not found'})
+    
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        author = request.POST.get('author', '').strip()
+        edition = request.POST.get('edition', 1)
+        price = request.POST.get('price', 0)
+        quantity = request.POST.get('quantity', 1)
+        rating = request.POST.get('rating', 1)
+        
+        if title and author:
+            try:
+                book.title = title
+                book.author = author
+                book.edition = int(edition)
+                book.price = float(price)
+                book.quantity = int(quantity)
+                book.rating = int(rating)
+                book.save()
+                return redirect('books.lab9_part1_listbooks')
+            except (ValueError, TypeError):
+                error = "Invalid input values. Please check your entries."
+                return render(request, 'bookmodule/lab9_part1_editbook.html', {'book': book, 'error': error})
+    
+    return render(request, 'bookmodule/lab9_part1_editbook.html', {'book': book})
+
+
+def lab9_part1_deletebook(request, id):
+    """Task 4: Delete a book"""
+    try:
+        book = Book.objects.get(id=id)
+        book.delete()
+    except Book.DoesNotExist:
+        pass
+    
+    return redirect('books.lab9_part1_listbooks')
