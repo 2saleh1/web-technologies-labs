@@ -1,0 +1,62 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Edit Book - Django Form{% endblock %}
+
+{% block content %}
+<h1>Edit Book</h1>
+
+{% if book %}
+    <form method="POST" style="max-width: 500px;">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+                <strong>Errors:</strong>
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        
+        {% for field in form %}
+            <div style="margin-bottom: 20px;">
+                <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                    {{ field.label }}
+                </label>
+                
+                {{ field }}
+                
+                {% if field.errors %}
+                    <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                        {% for error in field.errors %}
+                            <p style="margin: 5px 0;">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if field.help_text %}
+                    <small style="color: #6c757d; display: block; margin-top: 5px;">{{ field.help_text|safe }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <div style="display: flex; gap: 10px; margin-top: 30px;">
+            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Update Book
+            </button>
+            <a href="{% url 'books.lab9_part2_listbooks' %}" style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; text-align: center;">
+                Cancel
+            </a>
+        </div>
+    </form>
+{% else %}
+    <div style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px;">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    <a href="{% url 'books.lab9_part2_listbooks' %}" style="margin-top: 15px; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">
+        Back to Books
+    </a>
+{% endif %}
+{% endblock %}

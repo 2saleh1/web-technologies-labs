@@ -241,3 +241,58 @@ def lab9_part1_deletebook(request, id):
         pass
     
     return redirect('books.lab9_part1_listbooks')
+
+
+# Lab 9 Part 2 - CRUD Operations with Django Forms
+
+def lab9_part2_listbooks(request):
+    """Task 1: List all books with add/edit/delete links (using Django forms)"""
+    books = Book.objects.all().order_by('title')
+    return render(request, 'bookmodule/lab9_part2_listbooks.html', {'books': books})
+
+
+def lab9_part2_addbook(request):
+    """Task 1: Add a new book using Django form"""
+    if request.method == 'POST':
+        from .forms import BookForm
+        form = BookForm(request.POST)
+        if form.is_valid():
+            book = form.save(commit=False)
+            book.pubdate = timezone.now()
+            book.save()
+            return redirect('books.lab9_part2_listbooks')
+    else:
+        from .forms import BookForm
+        form = BookForm()
+    
+    return render(request, 'bookmodule/lab9_part2_addbook.html', {'form': form})
+
+
+def lab9_part2_editbook(request, id):
+    """Task 1: Edit a book using Django form"""
+    from .forms import BookForm
+    try:
+        book = Book.objects.get(id=id)
+    except Book.DoesNotExist:
+        return render(request, 'bookmodule/lab9_part2_editbook.html', {'error': 'Book not found'})
+    
+    if request.method == 'POST':
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('books.lab9_part2_listbooks')
+    else:
+        form = BookForm(instance=book)
+    
+    return render(request, 'bookmodule/lab9_part2_editbook.html', {'form': form, 'book': book})
+
+
+def lab9_part2_deletebook(request, id):
+    """Task 1: Delete a book"""
+    try:
+        book = Book.objects.get(id=id)
+        book.delete()
+    except Book.DoesNotExist:
+        pass
+    
+    return redirect('books.lab9_part2_listbooks')

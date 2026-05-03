@@ -1,0 +1,53 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Add New Book - Django Form{% endblock %}
+
+{% block content %}
+<h1>Add New Book</h1>
+
+<form method="POST" style="max-width: 500px;">
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+        <div style="background-color: #f8d7da; color: #721c24; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
+            <strong>Errors:</strong>
+            <ul>
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    
+    {% for field in form %}
+        <div style="margin-bottom: 20px;">
+            <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                {{ field.label }}
+            </label>
+            
+            {{ field }}
+            
+            {% if field.errors %}
+                <div style="color: #dc3545; font-size: 14px; margin-top: 5px;">
+                    {% for error in field.errors %}
+                        <p style="margin: 5px 0;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {% if field.help_text %}
+                <small style="color: #6c757d; display: block; margin-top: 5px;">{{ field.help_text|safe }}</small>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <div style="display: flex; gap: 10px; margin-top: 30px;">
+        <button type="submit" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Save Book
+        </button>
+        <a href="{% url 'books.lab9_part2_listbooks' %}" style="padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; text-align: center;">
+            Cancel
+        </a>
+    </div>
+</form>
+{% endblock %}
